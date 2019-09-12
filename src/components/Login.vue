@@ -6,10 +6,10 @@
       </div>
       <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px" class="login_form">
         <el-form-item prop="username">
-          <el-input class="radius" v-model="loginForm.username" prefix-icon="iconfont icon-user"></el-input>
+          <el-input class="radius prefix" v-model="loginForm.username" prefix-icon="iconfont icon-user"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input class="radius" type="password" v-model="loginForm.password" prefix-icon="iconfont icon-3702mima"></el-input>
+          <el-input class="radius prefix" type="password" v-model="loginForm.password" prefix-icon="iconfont icon-3702mima"></el-input>
         </el-form-item>
         <el-form-item class="btns">
           <el-button type="primary" round @click="login">登录</el-button>
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { loginApi } from '@/api'
 export default {
   data () {
     return {
@@ -46,8 +47,10 @@ export default {
     },
     login () {
       this.$refs.loginFormRef.validate(async valid => {
-        if (!valid) return false
-        const { data: res } = await this.$http.post('login', this.loginForm)
+        if (!valid) return
+        // const { data: res } = await this.$http.post('login', this.loginForm)
+        const { data: res } = await loginApi(this.loginForm)
+        console.log(res)
         if (res.meta.status !== 200) return this.$message.error('登录失败！')
         this.$message.success('登陆成功！')
         window.sessionStorage.setItem('token', res.data.token)
@@ -64,6 +67,9 @@ export default {
 <style>
 .radius input.el-input__inner {
   border-radius: 20px;
+}
+.prefix span.el-input__prefix {
+  left: 10px;
 }
 </style>
 
@@ -89,7 +95,7 @@ export default {
     border: 1px solid #eee;
     border-radius: 50%;
     padding: 10px;
-    box-shadow: 0 0 10px #ddd;
+    box-shadow: 0 0 10px dodgerblue;
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
