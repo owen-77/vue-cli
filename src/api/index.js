@@ -16,3 +16,31 @@ export const homeMenuApi = () => {
 export const userListApi = (params) => {
   return axios.get('users', { params })
 }
+
+export const userStateApi = (params) => {
+  return axios.put(`users/${params.id}/state/${params.mg_state}`)
+}
+
+export const addUserApi = (params) => {
+  return axios.post('users', params)
+}
+
+export const findUserApi = (params) => {
+  return axios.get(`users/${params.id}`)
+}
+
+export const exidUserApi = (params) => {
+  return axios.put(`users/${params.id}`, { email: params.email, mobile: params.mobile })
+}
+
+export const delUserApi = (params) => {
+  return axios.delete(`users/${params}`)
+}
+
+export const rightListApi = (params) => {
+  return axios.get(`rights/${params}`)
+}
+
+export const roleListApi = (params) => {
+  return axios.get('roles')
+}
