@@ -37,10 +37,38 @@ export const delUserApi = (params) => {
   return axios.delete(`users/${params}`)
 }
 
+export const setUserRoleApi = (params) => {
+  return axios.put(`users/${params.id}/role`, { rid: params.rid })
+}
+
 export const rightListApi = (params) => {
   return axios.get(`rights/${params}`)
 }
 
 export const roleListApi = (params) => {
   return axios.get('roles')
+}
+
+export const addRoleApi = (params) => {
+  return axios.post('roles', params)
+}
+
+export const findRoleApi = (params) => {
+  return axios.get(`roles/${params}`)
+}
+
+export const editRoleApi = (params) => {
+  return axios.put(`roles/${params.roleId}`, { roleName: params.roleName, roleDesc: params.roleDesc })
+}
+
+export const delRoleApi = (params) => {
+  return axios.delete(`roles/${params}`)
+}
+
+export const delRightApi = (params) => {
+  return axios.delete(`roles/${params.roleId}/rights/${params.rightId}`)
+}
+
+export const setRightApi = (params) => {
+  return axios.post(`roles/${params.roleId}/rights`, { rids: params.rids })
 }

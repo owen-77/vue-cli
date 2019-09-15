@@ -126,7 +126,6 @@ export default {
 
     ul.home_el-menu {
       border-right: 0;
-      overflow: hidden;
     }
   }
 

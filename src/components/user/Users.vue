@@ -70,6 +70,7 @@
                 icon="el-icon-setting"
                 size="mini"
                 round
+                @click="showRoleDialog(scope.row)"
               ></el-button>
             </el-tooltip>
           </template>
@@ -151,6 +152,32 @@
         <el-button type="primary" @click="exidUser()" round>确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="分配角色"
+      :visible.sync="roleDialog"
+      width="50%"
+      @close="selectId = ''"
+    >
+      <div>
+        <p>当前的用户：{{ userInfo.username }}</p>
+        <p>当前的角色：{{ userInfo.role_name }}</p>
+        <p>
+          分配新角色：<el-select v-model="selectId" placeholder="请选择">
+            <el-option
+              v-for="item in roleList"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="roleDialog = false">取 消</el-button>
+        <el-button type="primary" @click="setUserRole">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -161,7 +188,9 @@ import {
   addUserApi,
   findUserApi,
   exidUserApi,
-  delUserApi
+  delUserApi,
+  roleListApi,
+  setUserRoleApi
 } from '@/api'
 export default {
   data() {
@@ -233,7 +262,11 @@ export default {
           { required: true, message: '请输入手机号码', trigger: 'blur' },
           { validator: validMobile, trigger: 'blur' }
         ]
-      }
+      },
+      roleDialog: false,
+      userInfo: {},
+      roleList: [],
+      selectId: ''
     }
   },
   methods: {
@@ -277,7 +310,7 @@ export default {
         const { data: res } = await addUserApi(this.addForm)
         this.addDialogVisible = false
         if (res.meta.status !== 201) {
-          return this.$message.ereor('添加用户失败!')
+          return this.$message.error('添加用户失败!')
         }
         this.$message.success('添加用户成功！')
         this.init()
@@ -307,11 +340,15 @@ export default {
       })
     },
     async delUser(id) {
-      const delResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).catch(err => err)
+      const delResult = await this.$confirm(
+        '此操作将永久删除该用户, 是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).catch(err => err)
       if (delResult !== 'confirm') {
         return this.$message.info('已取消删除！')
       }
@@ -321,6 +358,27 @@ export default {
       }
       this.$message.success('删除成功！')
       this.init()
+    },
+    async showRoleDialog(userInfo) {
+      this.userInfo = userInfo
+      const { data: res } = await roleListApi()
+      if (res.meta.status !== 200) {
+        return this.$message.error('获取角色列表失败！')
+      }
+      this.roleList = res.data
+      this.roleDialog = true
+    },
+    async setUserRole() {
+      this.roleDialog = false
+      const { data: res } = await setUserRoleApi({
+        id: this.userInfo.id,
+        rid: this.selectId
+      })
+      if (res.meta.status !== 200) {
+        return this.$message.error('修改失败！')
+      }
+      this.init()
+      this.$message.success('修改成功！')
     }
   },
   created() {
