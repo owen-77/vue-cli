@@ -41,10 +41,6 @@ export const setUserRoleApi = (params) => {
   return axios.put(`users/${params.id}/role`, { rid: params.rid })
 }
 
-export const rightListApi = (params) => {
-  return axios.get(`rights/${params}`)
-}
-
 export const roleListApi = (params) => {
   return axios.get('roles')
 }
@@ -65,10 +61,38 @@ export const delRoleApi = (params) => {
   return axios.delete(`roles/${params}`)
 }
 
+export const rightListApi = (params) => {
+  return axios.get(`rights/${params}`)
+}
+
 export const delRightApi = (params) => {
   return axios.delete(`roles/${params.roleId}/rights/${params.rightId}`)
 }
 
 export const setRightApi = (params) => {
   return axios.post(`roles/${params.roleId}/rights`, { rids: params.rids })
+}
+
+export const cateListApi = (params) => {
+  return axios.get('categories', { params })
+}
+
+export const addCateApi = (params) => {
+  return axios.post('categories', params)
+}
+
+export const getCateApi = (params) => {
+  return axios.get(`categories/${params}`)
+}
+
+export const editCateApi = (params) => {
+  return axios.put(`categories/${params.id}`, { cat_name: params.cat_name })
+}
+
+export const delCateApi = (params) => {
+  return axios.delete(`categories/${params.id}`)
+}
+
+export const cateParamsApi = (params) => {
+  return axios.get(`categories/${params.id}/attributes`, { params: { sel: params.sel } })
 }

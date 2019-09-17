@@ -6,9 +6,13 @@ import store from './store'
 import './assets/css/global.css'
 import './assets/fonts/iconfont.css'
 
+import TreeTable from 'vue-table-with-tree-grid'
+
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
+
+Vue.component('tree-table', TreeTable)
 
 Vue.config.productionTip = false
 
