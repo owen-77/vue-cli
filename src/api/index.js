@@ -96,3 +96,31 @@ export const delCateApi = (params) => {
 export const cateParamsApi = (params) => {
   return axios.get(`categories/${params.id}/attributes`, { params: { sel: params.sel } })
 }
+
+export const addParamsApi = (params) => {
+  return axios.post(`categories/${params.id}/attributes`, {
+    attr_name: params.attr_name,
+    attr_sel: params.attr_sel,
+    attr_vals: params.attr_vals
+  })
+}
+
+export const findIdParamsApi = (params) => {
+  return axios.get(`categories/${params.id}/attributes/${params.attrId}`, { params: { attr_sel: params.attr_sel, attr_vals: params.attr_vals } })
+}
+
+export const editParamsApi = (params) => {
+  return axios.put(`categories/${params.cat_id}/attributes/${params.attr_id}`, { attr_name: params.attr_name, attr_sel: params.attr_sel, attr_vals: params.attr_vals })
+}
+
+export const delParamsApi = (params) => {
+  return axios.delete(`categories/${params.cat_id}/attributes/${params.attr_id}`)
+}
+
+export const goodsListApi = (params) => {
+  return axios.get('goods', { params })
+}
+
+export const delGoodsApi = (params) => {
+  return axios.delete(`goods/${params}`)
+}
